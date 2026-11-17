@@ -1,171 +1,437 @@
+
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#142f2a">
-<title>حاسبة الصكة</title>
+<title>حاسبة الصكة | تسجيل نقاط الفرق</title>
+<meta name="description" content="حاسبة الصكة لتسجيل نقاط فريقين من ستة لاعبين. أضف نتائج الجولات واحسب المجموع تلقائياً مع حفظ النتائج.">
+<meta name="keywords" content="الصكة, حاسبة الصكة, لعبة الورق, حساب النقاط, صكة عمان">
+<meta name="robots" content="index, follow">
 <style>
-:root{--bg:#f3f5f2;--card:#fff;--ink:#17231f;--muted:#69766f;--line:#e2e8e2;--green:#174b3d;--green2:#e7f1eb;--blue:#263f68;--blue2:#eaf0fa;--gold:#d6a84f;--danger:#b43b36;--shadow:0 12px 32px rgba(20,47,42,.08)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,Arial,sans-serif;line-height:1.55}
+:root{
+--bg:#f3f5f2;--card:#fff;--ink:#17231f;
+--muted:#69766f;--line:#e2e8e2;
+--green:#174b3d;--green2:#e7f1eb;
+--blue:#263f68;--gold:#d6a84f;
+--danger:#b43b36;
+}
+*{box-sizing:border-box}
+body{
+margin:0;background:var(--bg);color:var(--ink);
+font-family:Tahoma,Arial,sans-serif;line-height:1.55
+}
 .wrap{max-width:820px;margin:auto;padding:18px 14px 40px}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 18px}
-.brand{display:flex;align-items:center;gap:11px}.logo{width:46px;height:46px;border-radius:15px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:25px}
-h1{font-size:23px;margin:0}header p{margin:2px 0 0;color:var(--muted);font-size:13px}
-.pill{border:1px solid var(--line);border-radius:30px;padding:7px 12px;font-size:12px;color:var(--muted);background:#fff}
-.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:17px;margin:13px 0;box-shadow:var(--shadow)}
-.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
-h2{font-size:17px;margin:0}.hint{font-size:12px;color:var(--muted)}
+header{
+display:flex;align-items:center;justify-content:space-between;
+gap:12px;margin:8px 0 18px
+}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{
+width:46px;height:46px;border-radius:15px;
+background:var(--green);color:#fff;
+display:grid;place-items:center;font-size:25px
+}
+h1{font-size:23px;margin:0}
+header p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.pill{
+border:1px solid var(--line);border-radius:30px;
+padding:7px 12px;font-size:12px;color:var(--muted);
+background:#fff
+}
+.card{
+background:var(--card);border:1px solid var(--line);
+border-radius:20px;padding:17px;margin:13px 0;
+box-shadow:0 12px 32px rgba(20,47,42,.08)
+}
+.section-title{
+display:flex;align-items:center;
+justify-content:space-between;gap:10px;margin-bottom:13px
+}
+h2{font-size:17px;margin:0}
+.hint{font-size:12px;color:var(--muted)}
 .setup{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-input{width:100%;font:inherit;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;color:var(--ink);min-width:0}
+input{
+width:100%;font:inherit;border:1px solid var(--line);
+border-radius:12px;padding:11px 12px;
+background:#fff;color:var(--ink);min-width:0
+}
 input:focus{outline:2px solid #b6d4c2;border-color:var(--green)}
 .teams{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .team{border-radius:17px;padding:15px;color:#fff;min-width:0}
-.team.a{background:var(--green)}.team.b{background:var(--blue)}
-.team-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.team input{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.25);color:#fff;font-weight:bold}
+.team.a{background:var(--green)}
+.team.b{background:var(--blue)}
+.team-head{
+display:flex;justify-content:space-between;
+align-items:center;gap:8px
+}
+.team input{
+background:rgba(255,255,255,.13);
+border-color:rgba(255,255,255,.25);
+color:#fff;font-weight:bold
+}
 .team input::placeholder{color:rgba(255,255,255,.7)}
-.score{font-size:clamp(36px,8vw,52px);font-weight:800;line-height:1.2;margin:12px 0 3px;font-variant-numeric:tabular-nums}
+.score{
+font-size:clamp(36px,8vw,52px);font-weight:800;
+line-height:1.2;margin:12px 0 3px;
+font-variant-numeric:tabular-nums
+}
 .team small{opacity:.8}
-.players{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
+.players{
+display:grid;grid-template-columns:repeat(3,1fr);
+gap:6px;margin-top:12px
+}
 .players input{font-size:12px;padding:8px;text-align:center}
-.progress{height:7px;background:rgba(255,255,255,.2);border-radius:20px;overflow:hidden;margin-top:12px}
-.progress span{display:block;height:100%;background:#f0c86f;width:0%;transition:width .2s}
+.progress{
+height:7px;background:rgba(255,255,255,.2);
+border-radius:20px;overflow:hidden;margin-top:12px
+}
+.progress span{
+display:block;height:100%;background:#f0c86f;
+width:0%;transition:width .2s
+}
 .entry-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .entry{border:1px solid var(--line);border-radius:15px;padding:12px}
 .entry strong{display:block;margin-bottom:8px}
-.entry input{font-size:20px;font-weight:bold;text-align:center}
-button{font:inherit;border:0;border-radius:12px;padding:11px 15px;cursor:pointer;font-weight:bold}
-button:focus-visible{outline:3px solid #d6a84f;outline-offset:2px}
-.primary{background:var(--green);color:#fff}.secondary{background:var(--green2);color:var(--green)}
-.ghost{background:#f1f3f1;color:var(--ink)}.danger{background:#fff0ef;color:var(--danger)}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}.actions button{flex:1}
+.entry input{
+font-size:20px;font-weight:bold;text-align:center
+}
+button{
+font:inherit;border:0;border-radius:12px;
+padding:11px 15px;cursor:pointer;font-weight:bold
+}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.primary{background:var(--green);color:#fff}
+.secondary{background:var(--green2);color:var(--green)}
+.ghost{background:#f1f3f1;color:var(--ink)}
+.danger{background:#fff0ef;color:var(--danger)}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.actions button{flex:1}
 .history{display:flex;flex-direction:column;gap:8px}
-.round{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:10px;border:1px solid var(--line);border-radius:13px;padding:10px 12px}
-.round-no{background:#f1f4f1;border-radius:10px;padding:7px;text-align:center;font-weight:bold}
-.round-result{font-weight:bold;font-variant-numeric:tabular-nums}.round small{display:block;color:var(--muted);font-size:11px}
-.round-actions{display:flex;gap:5px}.round-actions button{padding:7px 9px;font-size:12px}
+.round{
+display:grid;grid-template-columns:48px 1fr auto;
+align-items:center;gap:10px;border:1px solid var(--line);
+border-radius:13px;padding:10px 12px
+}
+.round-no{
+background:#f1f4f1;border-radius:10px;
+padding:7px;text-align:center;font-weight:bold
+}
+.round-result{font-weight:bold;font-variant-numeric:tabular-nums}
+.round small{display:block;color:var(--muted);font-size:11px}
+.round-actions{display:flex;gap:5px}
+.round-actions button{padding:7px 9px;font-size:12px}
 .empty{text-align:center;color:var(--muted);padding:22px 8px}
-.status{border-radius:13px;padding:12px 14px;background:#f4f6f4;color:var(--muted);font-size:14px;text-align:center}
+.status{
+border-radius:13px;padding:12px 14px;
+background:#f4f6f4;color:var(--muted);
+font-size:14px;text-align:center
+}
 .status.win{background:#fff5dc;color:#79551a;font-weight:bold}
 .footer{text-align:center;color:var(--muted);font-size:11px;margin:20px 0}
-.hidden{display:none!important}
-@media(max-width:560px){.wrap{padding:12px 10px 30px}.card{padding:14px;border-radius:17px}.teams{gap:8px}.team{padding:11px}.players{grid-template-columns:1fr}.players input{padding:7px}.round{grid-template-columns:40px 1fr auto;padding:9px}.round-actions{flex-direction:column}.setup{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){
+.wrap{padding:12px 10px 30px}
+.card{padding:14px;border-radius:17px}
+.teams{gap:8px}.team{padding:11px}
+.players{grid-template-columns:1fr}
+.players input{padding:7px}
+.round{grid-template-columns:40px 1fr auto;padding:9px}
+.round-actions{flex-direction:column}
+.setup{grid-template-columns:1fr 1fr}
+}
 </style>
- <meta name="google-site-verification" content="adrrdIspZ_s54xzjBvr_LHZg-ADUaOR0u8ZWCJmLrHU" />
 </head>
 <body>
 <div class="wrap">
+
 <header>
- <div class="brand"><div class="logo">♠</div><div><h1>حاسبة الصكة</h1><p>ستة لاعبين · فريقان · تسجيل يدوي</p></div></div>
- <span class="pill">يحفظ تلقائياً</span>
+<div class="brand">
+<div class="logo">♠</div>
+<div>
+<h1>حاسبة الصكة</h1>
+<p>ستة لاعبين · فريقان · تسجيل يدوي</p>
+</div>
+</div>
+<span class="pill">يحفظ تلقائياً</span>
 </header>
 
 <section class="card">
- <div class="section-title"><h2>إعداد المباراة</h2><span class="hint">يمكنك تغييرها في أي وقت</span></div>
- <div class="setup">
-  <div><label for="target">نقاط الفوز</label><input id="target" type="number" min="1" step="1" value="152"></div>
-  <div><label for="matchName">اسم المباراة (اختياري)</label><input id="matchName" maxlength="40" placeholder="مثلاً: صكة الجمعة"></div>
- </div>
+<div class="section-title">
+<h2>إعداد المباراة</h2>
+<span class="hint">يمكنك تغييرها في أي وقت</span>
+</div>
+<div class="setup">
+<div>
+<label for="target">نقاط الفوز</label>
+<input id="target" type="number" min="1" step="1" value="152">
+</div>
+<div>
+<label for="matchName">اسم المباراة (اختياري)</label>
+<input id="matchName" maxlength="40" placeholder="مثلاً: صكة الجمعة">
+</div>
+</div>
 </section>
 
 <section class="teams">
- <div class="team a">
-  <div class="team-head"><strong>الفريق الأول</strong><span>♠</span></div>
-  <input id="teamAName" aria-label="اسم الفريق الأول" value="الفريق الأول">
-  <div class="score" id="scoreA">0</div><small>مجموع النقاط</small>
-  <div class="progress"><span id="barA"></span></div>
-  <div class="players">
-   <input id="a1" placeholder="اللاعب 1" aria-label="لاعب الفريق الأول 1">
-   <input id="a2" placeholder="اللاعب 2" aria-label="لاعب الفريق الأول 2">
-   <input id="a3" placeholder="اللاعب 3" aria-label="لاعب الفريق الأول 3">
-  </div>
- </div>
- <div class="team b">
-  <div class="team-head"><strong>الفريق الثاني</strong><span>♥</span></div>
-  <input id="teamBName" aria-label="اسم الفريق الثاني" value="الفريق الثاني">
-  <div class="score" id="scoreB">0</div><small>مجموع النقاط</small>
-  <div class="progress"><span id="barB"></span></div>
-  <div class="players">
-   <input id="b1" placeholder="اللاعب 4" aria-label="لاعب الفريق الثاني 1">
-   <input id="b2" placeholder="اللاعب 5" aria-label="لاعب الفريق الثاني 2">
-   <input id="b3" placeholder="اللاعب 6" aria-label="لاعب الفريق الثاني 3">
-  </div>
- </div>
-</section>
-
-<section class="card">
- <div class="section-title"><h2>إضافة نتيجة جولة</h2><span class="hint">أدخل نقاط الجولة لكل فريق</span></div>
- <div class="entry-grid">
-  <div class="entry"><strong id="entryAName">الفريق الأول</strong><label for="pointsA">النقاط</label><input id="pointsA" type="number" min="0" step="1" value="0" inputmode="numeric"></div>
-  <div class="entry"><strong id="entryBName">الفريق الثاني</strong><label for="pointsB">النقاط</label><input id="pointsB" type="number" min="0" step="1" value="0" inputmode="numeric"></div>
- </div>
- <div class="actions"><button class="primary" id="addRound">＋ تسجيل الجولة</button><button class="ghost" id="clearInputs">مسح الخانات</button></div>
- <p class="hint">تُضاف النقاط إلى رصيد كل فريق، ويمكن أن تكون نقاط أحد الفريقين صفراً.</p>
-</section>
-
-<div id="status" class="status" aria-live="polite">المباراة بدأت — سجّل نتيجة الجولة الأولى.</div>
-
-<section class="card">
- <div class="section-title"><h2>سجل الجولات</h2><span class="hint" id="roundCount">0 جولات</span></div>
- <div id="history" class="history"><div class="empty">لا توجد جولات مسجلة بعد.</div></div>
- <div class="actions"><button class="secondary" id="undo">تراجع عن آخر جولة</button><button class="danger" id="newMatch">بدء مباراة جديدة</button></div>
-</section>
-<div class="footer">تُحفظ بيانات المباراة على هذا الجهاز والمتصفح فقط.</div>
+<div class="team a">
+<div class="team-head"><strong>الفريق الأول</strong><span>♠</span></div>
+<input id="teamAName" value="الفريق الأول" aria-label="اسم الفريق الأول">
+<div class="score" id="scoreA">0</div>
+<small>مجموع النقاط</small>
+<div class="progress"><span id="barA"></span></div>
+<div class="players">
+<input id="a1" placeholder="اللاعب 1">
+<input id="a2" placeholder="اللاعب 2">
+<input id="a3" placeholder="اللاعب 3">
 </div>
+</div>
+
+<div class="team b">
+<div class="team-head"><strong>الفريق الثاني</strong><span>♥</span></div>
+<input id="teamBName" value="الفريق الثاني" aria-label="اسم الفريق الثاني">
+<div class="score" id="scoreB">0</div>
+<small>مجموع النقاط</small>
+<div class="progress"><span id="barB"></span></div>
+<div class="players">
+<input id="b1" placeholder="اللاعب 4">
+<input id="b2" placeholder="اللاعب 5">
+<input id="b3" placeholder="اللاعب 6">
+</div>
+</div>
+</section>
+
+<section class="card">
+<div class="section-title">
+<h2>إضافة نتيجة جولة</h2>
+<span class="hint">أدخل نقاط كل فريق</span>
+</div>
+
+<div class="entry-grid">
+<div class="entry">
+<strong id="entryAName">الفريق الأول</strong>
+<label for="pointsA">النقاط</label>
+<input id="pointsA" type="number" min="0" step="1"
+placeholder="أدخل النقاط" inputmode="numeric">
+</div>
+<div class="entry">
+<strong id="entryBName">الفريق الثاني</strong>
+<label for="pointsB">النقاط</label>
+<input id="pointsB" type="number" min="0" step="1"
+placeholder="أدخل النقاط" inputmode="numeric">
+</div>
+</div>
+
+<div class="actions">
+<button class="primary" id="addRound">＋ تسجيل الجولة</button>
+<button class="ghost" id="clearInputs">مسح الخانات</button>
+</div>
+<p class="hint">تُضاف النقاط إلى رصيد كل فريق، ويمكن أن تكون نقاط أحد الفريقين صفراً.</p>
+</section>
+
+<div id="status" class="status" aria-live="polite">
+المباراة بدأت — سجّل نتيجة الجولة الأولى.
+</div>
+
+<section class="card">
+<div class="section-title">
+<h2>سجل الجولات</h2>
+<span class="hint" id="roundCount">0 جولات</span>
+</div>
+<div id="history" class="history">
+<div class="empty">لا توجد جولات مسجلة بعد.</div>
+</div>
+<div class="actions">
+<button class="secondary" id="undo">تراجع عن آخر جولة</button>
+<button class="danger" id="newMatch">بدء مباراة جديدة</button>
+</div>
+</section>
+
+<div class="footer">
+تُحفظ بيانات المباراة على هذا الجهاز والمتصفح فقط.
+</div>
+</div>
+
 <script>
 (() => {
- const $ = id => document.getElementById(id);
- const fields = ['target','matchName','teamAName','teamBName','a1','a2','a3','b1','b2','b3'];
- let rounds = [];
- const STORE = 'sakka_scorekeeper_v1';
- const num = v => Math.max(0, Math.floor(Number(v) || 0));
- const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const nameA = () => $('teamAName').value.trim() || 'الفريق الأول';
- const nameB = () => $('teamBName').value.trim() || 'الفريق الثاني';
- const total = key => rounds.reduce((sum,r)=>sum+r[key],0);
- function save(){
-  try{localStorage.setItem(STORE,JSON.stringify({fields:Object.fromEntries(fields.map(id=>[id,$(id).value])),rounds}));}catch(e){}
- }
- function render(){
-  const a=total('a'),b=total('b'),target=Math.max(1,num($('target').value));
-  $('scoreA').textContent=a;$('scoreB').textContent=b;
-  $('barA').style.width=Math.min(100,a/target*100)+'%';
-  $('barB').style.width=Math.min(100,b/target*100)+'%';
-  $('entryAName').textContent=nameA();$('entryBName').textContent=nameB();
-  $('roundCount').textContent=rounds.length+' جولات';
-  const history=$('history');
-  if(!rounds.length) history.innerHTML='<div class="empty">لا توجد جولات مسجلة بعد.</div>';
-  else history.innerHTML=rounds.map((r,i)=>`<div class="round"><div class="round-no">${i+1}</div><div class="round-result">${esc(nameA())}: ${r.a} — ${esc(nameB())}: ${r.b}<small>نتيجة الجولة ${i+1}</small></div><div class="round-actions"><button class="ghost" data-edit="${i}">تعديل</button><button class="danger" data-delete="${i}">حذف</button></div></div>`).join('');
-  const status=$('status');
-  if(a>=target || b>=target){
-   let msg = a===b ? 'وصل الفريقان إلى حد الفوز بالتعادل!' : (a>b?nameA():nameB())+' فاز بالمباراة!';
-   status.textContent='🏆 '+msg+' النتيجة: '+a+' — '+b;status.className='status win';
-  } else {status.textContent='المتبقي للفوز: '+nameA()+' '+(target-a)+' نقطة · '+nameB()+' '+(target-b)+' نقطة';status.className='status';}
-  $('undo').disabled=!rounds.length;$('undo').style.opacity=rounds.length?1:.5;
-  save();
- }
- $('addRound').addEventListener('click',()=>{
-  const av=$('pointsA').value,bv=$('pointsB').value;
-  if(av.trim()===''||bv.trim()===''){alert('أدخل نقاط الفريقين أولاً.');return;}
-  rounds.push({a:num(av),b:num(bv)});
-  $('pointsA').value='0';$('pointsB').value='0';render();
- });
- $('clearInputs').addEventListener('click',()=>{$('pointsA').value='0';$('pointsB').value='0';});
- $('undo').addEventListener('click',()=>{if(rounds.length){rounds.pop();render();}});
- $('history').addEventListener('click',e=>{
-  const edit=e.target.closest('[data-edit]'),del=e.target.closest('[data-delete]');
-  if(edit){const i=Number(edit.dataset.edit),r=rounds[i];const a=prompt('نقاط '+nameA()+' في الجولة '+(i+1),r.a);if(a===null)return;const b=prompt('نقاط '+nameB()+' في الجولة '+(i+1),r.b);if(b===null)return;if(a.trim()===''||b.trim()===''||Number(a)<0||Number(b)<0||!Number.isFinite(Number(a))||!Number.isFinite(Number(b))){alert('أدخل أرقاماً صحيحة غير سالبة.');return;}rounds[i]={a:num(a),b:num(b)};render();}
-  if(del){const i=Number(del.dataset.delete);if(confirm('هل تريد حذف الجولة '+(i+1)+'؟')){rounds.splice(i,1);render();}}
- });
- $('newMatch').addEventListener('click',()=>{
-  if(!confirm('سيتم مسح نتائج المباراة الحالية. هل تريد المتابعة؟'))return;
-  rounds=[];$('pointsA').value='0';$('pointsB').value='0';render();
- });
- fields.forEach(id=>$(id).addEventListener('input',render));
- try{const old=JSON.parse(localStorage.getItem(STORE)||'null');if(old){fields.forEach(id=>{if(old.fields&&old.fields[id]!==undefined)$(id).value=old.fields[id];});if(Array.isArray(old.rounds))rounds=old.rounds.filter(r=>Number.isFinite(r.a)&&Number.isFinite(r.b));}}catch(e){}
- render();
+const $ = id => document.getElementById(id);
+const fields = [
+'target','matchName','teamAName','teamBName',
+'a1','a2','a3','b1','b2','b3'
+];
+let rounds = [];
+const STORE = 'sakka_scorekeeper_v1';
+
+const num = v => Math.max(0,Math.floor(Number(v)||0));
+
+const esc = s => String(s).replace(/[&<>"']/g,c=>({
+'&':'&amp;','<':'&lt;','>':'&gt;',
+'"':'&quot;',"'":'&#39;'
+}[c]));
+
+const nameA = () => $('teamAName').value.trim() || 'الفريق الأول';
+const nameB = () => $('teamBName').value.trim() || 'الفريق الثاني';
+const total = key => rounds.reduce((sum,r)=>sum+r[key],0);
+
+function save(){
+try{
+localStorage.setItem(STORE,JSON.stringify({
+fields:Object.fromEntries(fields.map(id=>[id,$(id).value])),
+rounds
+}));
+}catch(e){}
+}
+
+function render(){
+const a=total('a'),b=total('b');
+const target=Math.max(1,num($('target').value));
+
+$('scoreA').textContent=a;
+$('scoreB').textContent=b;
+$('barA').style.width=Math.min(100,a/target*100)+'%';
+$('barB').style.width=Math.min(100,b/target*100)+'%';
+
+$('entryAName').textContent=nameA();
+$('entryBName').textContent=nameB();
+$('roundCount').textContent=rounds.length+' جولات';
+
+const history=$('history');
+
+if(!rounds.length){
+history.innerHTML='<div class="empty">لا توجد جولات مسجلة بعد.</div>';
+}else{
+history.innerHTML=rounds.map((r,i)=>`
+<div class="round">
+<div class="round-no">${i+1}</div>
+<div class="round-result">
+${esc(nameA())}: ${r.a} — ${esc(nameB())}: ${r.b}
+<small>نتيجة الجولة ${i+1}</small>
+</div>
+<div class="round-actions">
+<button class="ghost" data-edit="${i}">تعديل</button>
+<button class="danger" data-delete="${i}">حذف</button>
+</div>
+</div>`).join('');
+}
+
+const status=$('status');
+
+if(a>=target || b>=target){
+let msg=a===b
+?'وصل الفريقان إلى حد الفوز بالتعادل!'
+:(a>b?nameA():nameB())+' فاز بالمباراة!';
+status.textContent='🏆 '+msg+' النتيجة: '+a+' — '+b;
+status.className='status win';
+}else{
+status.textContent='المتبقي للفوز: '+nameA()+' '+(target-a)+
+' نقطة · '+nameB()+' '+(target-b)+' نقطة';
+status.className='status';
+}
+
+$('undo').disabled=!rounds.length;
+$('undo').style.opacity=rounds.length?1:.5;
+save();
+}
+
+// تسجيل جولة جديدة
+$('addRound').addEventListener('click',()=>{
+const av=$('pointsA').value;
+const bv=$('pointsB').value;
+
+if(av.trim()===''||bv.trim()===''){
+alert('أدخل نقاط الفريقين أولاً.');
+return;
+}
+
+rounds.push({a:num(av),b:num(bv)});
+
+// تفريغ الخانتين بعد التسجيل
+$('pointsA').value='';
+$('pointsB').value='';
+render();
+});
+
+// مسح خانات النقاط
+$('clearInputs').addEventListener('click',()=>{
+$('pointsA').value='';
+$('pointsB').value='';
+});
+
+// التراجع عن آخر جولة
+$('undo').addEventListener('click',()=>{
+if(rounds.length){
+rounds.pop();
+render();
+}
+});
+
+// تعديل أو حذف جولة
+$('history').addEventListener('click',e=>{
+const edit=e.target.closest('[data-edit]');
+const del=e.target.closest('[data-delete]');
+
+if(edit){
+const i=Number(edit.dataset.edit);
+const r=rounds[i];
+
+const a=prompt('نقاط '+nameA()+' في الجولة '+(i+1),r.a);
+if(a===null)return;
+
+const b=prompt('نقاط '+nameB()+' في الجولة '+(i+1),r.b);
+if(b===null)return;
+
+if(a.trim()===''||b.trim()===''||
+Number(a)<0||Number(b)<0||
+!Number.isFinite(Number(a))||!Number.isFinite(Number(b))){
+alert('أدخل أرقاماً صحيحة غير سالبة.');
+return;
+}
+
+rounds[i]={a:num(a),b:num(b)};
+render();
+}
+
+if(del){
+const i=Number(del.dataset.delete);
+if(confirm('هل تريد حذف الجولة '+(i+1)+'؟')){
+rounds.splice(i,1);
+render();
+}
+}
+});
+
+// مباراة جديدة
+$('newMatch').addEventListener('click',()=>{
+if(!confirm('سيتم مسح نتائج المباراة الحالية. هل تريد المتابعة؟'))return;
+
+rounds=[];
+$('pointsA').value='';
+$('pointsB').value='';
+render();
+});
+
+// حفظ الإعدادات تلقائياً
+fields.forEach(id=>$(id).addEventListener('input',render));
+
+// استعادة البيانات المحفوظة
+try{
+const old=JSON.parse(localStorage.getItem(STORE)||'null');
+if(old){
+fields.forEach(id=>{
+if(old.fields&&old.fields[id]!==undefined){
+$(id).value=old.fields[id];
+}
+});
+if(Array.isArray(old.rounds)){
+rounds=old.rounds.filter(r=>
+Number.isFinite(r.a)&&Number.isFinite(r.b)
+);
+}
+}
+}catch(e){}
+
+render();
 })();
 </script>
 </body>
